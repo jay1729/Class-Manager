@@ -1,4 +1,4 @@
-package com.gvjay.classmanager;
+package com.gvjay.classmanager.Database;
 
 import android.content.ContentValues;
 import android.content.Context;
