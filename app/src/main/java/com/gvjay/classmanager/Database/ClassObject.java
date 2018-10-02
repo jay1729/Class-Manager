@@ -17,7 +17,7 @@ public class ClassObject {
             + COLUMN_TITLE + " TEXT, "
             + COLUMN_DAY + " INTEGER, "
             + COLUMN_FROM_TIME + " INTEGER, "
-            + COLUMN_TO_TIME + " INTEGER, "
+            + COLUMN_TO_TIME + " INTEGER"
             + ")";
 
     public int id;
