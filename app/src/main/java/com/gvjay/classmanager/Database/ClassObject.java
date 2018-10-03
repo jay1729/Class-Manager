@@ -1,5 +1,7 @@
 package com.gvjay.classmanager.Database;
 
+import android.text.format.DateUtils;
+
 import com.gvjay.classmanager.Utils;
 
 public class ClassObject {
@@ -30,22 +32,22 @@ public class ClassObject {
         this.id = id;
         this.title = title;
         this.day = day;
-        this.fromTime = fromTime;
-        this.toTime = toTime;
+        this.fromTime = fromTime % DateUtils.DAY_IN_MILLIS;
+        this.toTime = toTime % DateUtils.DAY_IN_MILLIS;
     }
 
     public ClassObject(String title, int day, long fromTime, long toTime){
         this.title = title;
         this.day = day;
-        this.fromTime = fromTime;
-        this.toTime = toTime;
+        this.fromTime = fromTime % DateUtils.DAY_IN_MILLIS;
+        this.toTime = toTime % DateUtils.DAY_IN_MILLIS;
     }
 
     public ClassObject(String title, String day, long fromTime, long toTime){
         this.title = title;
         this.day = Utils.getDayNumber(day);
         this.fromTime = fromTime;
-        this.toTime = toTime;
+        this.toTime = toTime % DateUtils.DAY_IN_MILLIS;
     }
 
 }

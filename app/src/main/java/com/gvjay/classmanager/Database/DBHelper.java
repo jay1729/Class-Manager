@@ -56,8 +56,15 @@ public class DBHelper extends SQLiteOpenHelper {
             output.add(new ClassObject(cursor.getInt(0), cursor.getString(1), cursor.getInt(2),
                     cursor.getLong(3), cursor.getLong(4)));
             if(cursor.isLast()) break;
+            cursor.moveToNext();
         }
         cursor.close();
         return output;
+    }
+
+    public void clearDB(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(ClassObject.TABLE_NAME, null, null);
+        db.delete(AttendanceObject.TABLE_NAME, null, null);
     }
 }
