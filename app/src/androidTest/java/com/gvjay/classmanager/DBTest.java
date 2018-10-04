@@ -5,6 +5,7 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.filters.LargeTest;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.gvjay.classmanager.Database.AttendanceObject;
 import com.gvjay.classmanager.Database.ClassObject;
 import com.gvjay.classmanager.Database.DBHelper;
 
@@ -53,6 +54,30 @@ public class DBTest {
         assertThat(classObjects.size(), is(2));
         assertThat(classObjects.get(0).title, is("Wednesday 1"));
         assertThat(classObjects.get(1).title, is("Wednesday 2"));
+    }
+
+    @Test
+    public void testErrorCodes(){
+        ClassObject classObject = new ClassObject("Tuesday", 2, 60*60*1000*4, 60*60*1000*5);
+        assertThat(this.helper.addClass(classObject), is(DBHelper.ERROR_TIME_SLOT_UNAVAILABLE));
+    }
+
+    @Test
+    public void testAttendance(){
+        AttendanceObject attendanceObject = new AttendanceObject("Tuesday", 60*60*1000*4, AttendanceObject.Choices.POSITIVE);
+        attendanceObject.id = this.helper.addAttendance(attendanceObject);
+        AttendanceObject attendanceObject2 = new AttendanceObject("Tuesday", 60*60*1000*6, AttendanceObject.Choices.NEGATIVE);
+        attendanceObject2.id = this.helper.addAttendance(attendanceObject2);
+        ArrayList<AttendanceObject> attendanceObjects = this.helper.getAttendanceByTitle(attendanceObject.classTitle);
+
+        assertThat(attendanceObjects.get(0).id, is(attendanceObject2.id));
+        assertThat(attendanceObjects.get(1).id, is(attendanceObject.id));
+
+        attendanceObject2.status = AttendanceObject.Choices.POSITIVE;
+        this.helper.updateAttendanceRecord(attendanceObject2);
+        attendanceObjects = this.helper.getAttendanceByTitle(attendanceObject.classTitle);
+
+        assertThat(attendanceObjects.get(0).status, is(AttendanceObject.Choices.POSITIVE));
     }
 
 }

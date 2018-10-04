@@ -24,7 +24,7 @@ public class AttendanceObject {
             + COLUMN_STATUS + " TEXT"
             + ")";
 
-    public int id;
+    public long id;
     public String classTitle;
     public long date;
     public String status;
