@@ -8,4 +8,8 @@ public class Utils {
         }
         return -1;
     }
+
+    public static String getDayFromNumber(int day){
+        return Consts.daysOfTheWeek[day];
+    }
 }
