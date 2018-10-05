@@ -4,6 +4,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.gvjay.classmanager.Seed.Seeder;
+
 public class MainActivity extends AppCompatActivity {
 
     private DayAdapter dayAdapter;
@@ -19,5 +21,8 @@ public class MainActivity extends AppCompatActivity {
 
         DayPageListener pageListener = new DayPageListener(viewPager);
         viewPager.addOnPageChangeListener(pageListener);
+
+        Seeder seeder = new Seeder(this);
+        seeder.seedData();
     }
 }
