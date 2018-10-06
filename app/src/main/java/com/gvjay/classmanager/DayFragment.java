@@ -1,6 +1,7 @@
 package com.gvjay.classmanager;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -83,6 +84,8 @@ public class DayFragment extends Fragment {
             }
             classViewHolder.attendance.setText(attendance);
             classViewHolder.classTiming.setText(Utils.getTiming(this.data.get(i).fromTime, this.data.get(i).toTime));
+
+            classViewHolder.itemView.setOnClickListener(new ClassClickListener(this.data.get(i).title, context));
         }
 
         @Override
@@ -102,6 +105,25 @@ public class DayFragment extends Fragment {
             className = itemView.findViewById(R.id.className);
             classTiming = itemView.findViewById(R.id.classTiming);
             attendance = itemView.findViewById(R.id.attendancePC);
+        }
+    }
+
+    public class ClassClickListener implements View.OnClickListener{
+
+        private String classTitle;
+        private Context context;
+
+        ClassClickListener(String classTitle, Context context){
+            this.classTitle = classTitle;
+            this.context = context;
+        }
+
+        @Override
+        public void onClick(View view) {
+            Intent intent = new Intent(context, ClassActivity.class);
+            intent.putExtra(ClassActivity.CLASS_TITLE_KEY, classTitle);
+
+            startActivity(intent);
         }
     }
 }
