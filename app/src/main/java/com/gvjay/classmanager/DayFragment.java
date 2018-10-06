@@ -35,14 +35,18 @@ public class DayFragment extends Fragment {
         day = args.getInt(DAY_KEY);
         DBHelper dbHelper = new DBHelper(context);
         classes = dbHelper.getClassesOnDay(day);
-
+        int s = classes.size();
+        double[] attendancePC = new double[s];
+        for(int i=0;i<s;i++){
+            attendancePC[i] = Utils.calculateAttendance(dbHelper.getAttendanceByTitle(classes.get(i).title));
+        }
 
         View view = inflater.inflate(R.layout.fragment_day, container, false);
 
         dayTextView = view.findViewById(R.id.dayTextView);
         dayTextView.setText(Utils.getDayFromNumber(day));
 
-        ClassAdapter adapter = new ClassAdapter(classes);
+        ClassAdapter adapter = new ClassAdapter(classes, attendancePC);
         RecyclerView recyclerView = view.findViewById(R.id.classRV);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(adapter);
@@ -53,9 +57,11 @@ public class DayFragment extends Fragment {
     public class ClassAdapter extends RecyclerView.Adapter<ClassViewHolder>{
 
         private ArrayList<ClassObject> data;
+        private double[] attendancePC;
 
-        ClassAdapter(ArrayList<ClassObject> data){
+        ClassAdapter(ArrayList<ClassObject> data, double[] attendancePC){
             this.data = data;
+            this.attendancePC = attendancePC;
         }
 
         @NonNull
@@ -69,7 +75,14 @@ public class DayFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull ClassViewHolder classViewHolder, int i) {
             classViewHolder.className.setText(this.data.get(i).title);
-            Log.i("The wwwww", String.valueOf(data.size()));
+            String attendance;
+            if(this.attendancePC[i] < 0){
+                attendance = "NA";
+            }else{
+                attendance = String.valueOf(attendancePC[i]).substring(0, 4) + "%";
+            }
+            classViewHolder.attendance.setText(attendance);
+            classViewHolder.classTiming.setText(Utils.getTiming(this.data.get(i).fromTime, this.data.get(i).toTime));
         }
 
         @Override
