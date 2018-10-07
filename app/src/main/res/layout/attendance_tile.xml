@@ -40,10 +40,54 @@
         app:layout_constraintTop_toTopOf="@+id/at_dayTV" />
 
     <View
+        android:id="@+id/view2"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/colorPrimaryDark"
         android:backgroundTint="@color/colorPrimaryDark"
         app:layout_constraintBottom_toBottomOf="parent" />
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/at_statusRG"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="horizontal">
+
+
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/at_positive_status"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="Present"/>
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/at_negative_status"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="Absent"/>
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/at_neutral_status"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="Not Counted"/>
+
+
+    </RadioGroup>
 
 </android.support.constraint.ConstraintLayout>

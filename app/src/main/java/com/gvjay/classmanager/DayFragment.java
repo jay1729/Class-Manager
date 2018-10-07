@@ -80,7 +80,9 @@ public class DayFragment extends Fragment {
             if(this.attendancePC[i] < 0){
                 attendance = "NA";
             }else{
-                attendance = String.valueOf(attendancePC[i]).substring(0, 4) + "%";
+                attendance = String.valueOf(attendancePC[i]);
+                attendance = attendance.substring(0, (4 < attendance.length()) ? 4 : attendance.length());
+                attendance += "%";
             }
             classViewHolder.attendance.setText(attendance);
             classViewHolder.classTiming.setText(Utils.getTiming(this.data.get(i).fromTime, this.data.get(i).toTime));

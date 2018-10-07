@@ -11,7 +11,7 @@ import com.gvjay.classmanager.Database.DBHelper;
 
 import java.util.ArrayList;
 
-public class ClassActivity extends AppCompatActivity {
+public class ClassActivity extends AppCompatActivity implements AttendanceAdapter.ReloadData{
 
     private DBHelper dbHelper;
     private String classTitle;
@@ -27,7 +27,7 @@ public class ClassActivity extends AppCompatActivity {
         setContentView(R.layout.activity_class);
 
         dbHelper = new DBHelper(this);
-        adapter = new AttendanceAdapter();
+        adapter = new AttendanceAdapter(dbHelper, this);
         RecyclerView recyclerView = findViewById(R.id.attendanceRV);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
@@ -41,6 +41,7 @@ public class ClassActivity extends AppCompatActivity {
     public void loadData(){
         attendanceObjects = dbHelper.getAttendanceByTitle(classTitle);
         adapter.setData(attendanceObjects);
-        attendancePC.setText(String.valueOf(Utils.calculateAttendance(attendanceObjects)).substring(0, 4));
+        String pc = String.valueOf(Utils.calculateAttendance(attendanceObjects));
+        attendancePC.setText(pc.substring(0, (4 < pc.length()) ? 4 : pc.length()) + "%");
     }
 }
