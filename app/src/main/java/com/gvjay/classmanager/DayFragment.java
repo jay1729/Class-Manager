@@ -27,6 +27,8 @@ public class DayFragment extends Fragment {
     private ArrayList<ClassObject> classes;
     private Context context;
     private TextView dayTextView;
+    private DBHelper dbHelper;
+    private ClassAdapter adapter;
 
     @Nullable
     @Override
@@ -34,7 +36,7 @@ public class DayFragment extends Fragment {
         Bundle args = getArguments();
         context = getActivity();
         day = args.getInt(DAY_KEY);
-        DBHelper dbHelper = new DBHelper(context);
+        dbHelper = new DBHelper(context);
         classes = dbHelper.getClassesOnDay(day);
         int s = classes.size();
         double[] attendancePC = new double[s];
@@ -47,12 +49,18 @@ public class DayFragment extends Fragment {
         dayTextView = view.findViewById(R.id.dayTextView);
         dayTextView.setText(Utils.getDayFromNumber(day));
 
-        ClassAdapter adapter = new ClassAdapter(classes, attendancePC);
+        adapter = new ClassAdapter(classes, attendancePC);
         RecyclerView recyclerView = view.findViewById(R.id.classRV);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(adapter);
 
         return view;
+    }
+
+    public void reloadData(){
+        Log.i("Wololo", ""+(dbHelper == null));
+        classes = dbHelper.getClassesOnDay(day);
+        adapter.setData(classes);
     }
 
     public class ClassAdapter extends RecyclerView.Adapter<ClassViewHolder>{
@@ -93,6 +101,11 @@ public class DayFragment extends Fragment {
         @Override
         public int getItemCount() {
             return this.data.size();
+        }
+
+        public void setData(ArrayList<ClassObject> classObjects){
+            this.data = classObjects;
+            notifyDataSetChanged();
         }
     }
 
