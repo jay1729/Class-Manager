@@ -17,7 +17,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ClassActivity"></activity>
+        <activity android:name=".ClassActivity" />
+        <activity android:name=".AddClassActivity"></activity>
     </application>
 
 </manifest>
