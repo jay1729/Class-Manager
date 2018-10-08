@@ -40,4 +40,14 @@ public class DayAdapter extends FragmentPagerAdapter {
     public int getCount() {
         return 9;
     }
+
+    public static int getRealDayNumber(int i){
+        int realIndex = i;
+        if(realIndex == 0){
+            realIndex = 6;
+        }else if(realIndex == 8){
+            realIndex = 0;
+        }else realIndex--;
+        return realIndex;
+    }
 }

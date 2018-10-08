@@ -18,6 +18,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static String DATABASE_NAME = "CMDatabase.db";
 
     public static long ERROR_TIME_SLOT_UNAVAILABLE = -1;
+    public static long ERROR_FROM_AFTER_TO = -2;
 
     private Context context;
 
@@ -40,6 +41,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     private long isClassAllowed(ClassObject classObject){
+        if(classObject.fromTime > classObject.toTime) return ERROR_FROM_AFTER_TO;
         ArrayList<ClassObject> clArrayList = getClassesOnDay(classObject.day);
         int size = clArrayList.size();
         for(int i=0;i<size;i++){

@@ -54,8 +54,8 @@
         app:layout_constraintStart_toStartOf="@+id/aac_name_tv"
         app:layout_constraintTop_toBottomOf="@+id/view1" />
 
-    <EditText
-        android:id="@+id/aac_day_et"
+    <Spinner
+        android:id="@+id/aac_day_spinner"
         android:layout_width="100dp"
         android:layout_height="50dp"
         android:hint="day"
@@ -67,7 +67,7 @@
         android:id="@+id/view2"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        app:layout_constraintTop_toBottomOf="@+id/aac_day_et" />
+        app:layout_constraintTop_toBottomOf="@+id/aac_day_spinner" />
 
     <TextView
         android:id="@+id/aac_from_tv"
@@ -88,7 +88,7 @@
         android:text="11:00"
         android:textSize="25dp"
         app:layout_constraintBottom_toBottomOf="@+id/aac_from_tv"
-        app:layout_constraintStart_toStartOf="@+id/aac_day_et"
+        app:layout_constraintStart_toStartOf="@+id/aac_day_spinner"
         app:layout_constraintTop_toTopOf="@+id/aac_from_tv" />
 
     <View

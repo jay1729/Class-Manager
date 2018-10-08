@@ -1,9 +1,12 @@
 package com.gvjay.classmanager;
 
+import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import com.gvjay.classmanager.Seed.Seeder;
 
@@ -31,6 +34,16 @@ public class MainActivity extends AppCompatActivity {
 
         DayPageListener pageListener = new DayPageListener(viewPager);
         viewPager.addOnPageChangeListener(pageListener);
+
+        FloatingActionButton floatingActionButton = findViewById(R.id.floatingActionButton);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, AddClassActivity.class);
+                intent.putExtra(AddClassActivity.DAY_NUMBER_KEY, DayAdapter.getRealDayNumber(viewPager.getCurrentItem()));
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
