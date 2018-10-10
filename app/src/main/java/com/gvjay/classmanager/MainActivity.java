@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.gvjay.classmanager.Database.DBHelper;
 import com.gvjay.classmanager.Seed.Seeder;
 
 import java.util.Calendar;
@@ -27,6 +28,9 @@ public class MainActivity extends AppCompatActivity {
         wasPaused = false;
         Calendar calendar = Calendar.getInstance();
         adapterPosition = calendar.get(Calendar.DAY_OF_WEEK);
+
+        Intent intent = new Intent(this, NotificationService.class);
+        startService(intent);
 
         viewPager = findViewById(R.id.viewPager);
         dayAdapter = new DayAdapter(getSupportFragmentManager());

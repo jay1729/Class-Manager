@@ -136,6 +136,7 @@ public class AddClassActivity extends AppCompatActivity {
         long id = (int) dbHelper.addClass(classObject);
         if(id > 0){
             Toast.makeText(this, CLASS_ADDED_MSG, Toast.LENGTH_SHORT).show();
+            BackTask.syncWithDB();
             finish();
             return;
         }

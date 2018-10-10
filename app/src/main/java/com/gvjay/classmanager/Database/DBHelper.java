@@ -81,7 +81,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 cursor.moveToNext();
             }
         } catch (CursorIndexOutOfBoundsException e){
-            e.printStackTrace();
+
         }
 
         cursor.close();
@@ -112,7 +112,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 cursor.moveToNext();
             }
         }catch (CursorIndexOutOfBoundsException e){
-            e.printStackTrace();
+
         }
 
         cursor.close();
