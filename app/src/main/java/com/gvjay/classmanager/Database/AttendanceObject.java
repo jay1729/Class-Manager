@@ -29,6 +29,8 @@ public class AttendanceObject {
     public long date;
     public String status;
 
+    public AttendanceObject() {}
+
     public AttendanceObject(int id, String classTitle, long date, String status){
         this.id = id;
         this.classTitle = classTitle;

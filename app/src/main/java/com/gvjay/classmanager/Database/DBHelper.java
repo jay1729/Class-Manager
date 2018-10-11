@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.gvjay.classmanager.BackTask;
 import com.gvjay.classmanager.Database.AttendanceObject;
 import com.gvjay.classmanager.Database.ClassObject;
 
@@ -64,7 +65,9 @@ public class DBHelper extends SQLiteOpenHelper {
         cv.put(ClassObject.COLUMN_FROM_TIME, classObject.fromTime);
         cv.put(ClassObject.COLUMN_TO_TIME, classObject.toTime);
 
-        return db.insert(ClassObject.TABLE_NAME, null, cv);
+        long id = db.insert(ClassObject.TABLE_NAME, null, cv);
+        BackTask.syncWithDB();
+        return id;
     }
 
     public ArrayList<ClassObject> getClassesOnDay(int day){
@@ -129,6 +132,24 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return db.update(AttendanceObject.TABLE_NAME, cv, AttendanceObject.COLUMN_ID+"=?",
                 new String[]{String.valueOf(attendanceObject.id)});
+    }
+
+    public AttendanceObject getAttendanceByID(long id){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor cursor = db.query(AttendanceObject.TABLE_NAME, null, AttendanceObject.COLUMN_ID + "=?",
+                new String[]{String.valueOf(id)},null, null, null);
+        cursor.moveToFirst();
+        AttendanceObject output = new AttendanceObject(cursor.getInt(0), cursor.getString(1), cursor.getLong(2), cursor.getString(3));
+        cursor.close();
+        db.close();
+        return output;
+    }
+
+    public long updateAttendanceByID(long id, String status){
+        AttendanceObject attendanceObject = getAttendanceByID(id);
+        attendanceObject.status = status;
+        return updateAttendanceRecord(attendanceObject);
     }
 
     public void clearDB(){

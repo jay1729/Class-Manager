@@ -24,6 +24,7 @@ public class BackTask extends AsyncTask<Void, Void, Void>{
     private boolean[] attendance;
     private boolean[] notification;
     private AttendanceObject[] attendanceObjectsForDay;
+    private NotificationService notificationService;
 
     private BackTask() {
         classObjects = new ArrayList<ArrayList<ClassObject>>();
@@ -115,5 +116,10 @@ public class BackTask extends AsyncTask<Void, Void, Void>{
 
     private void sendNotification(AttendanceObject attendanceObject){
         Log.i("Notification", "Sent");
+        notificationService.sendNotification(attendanceObject);
+    }
+
+    public static void setNotificationService(NotificationService notificationService){
+        mTask.notificationService = notificationService;
     }
 }

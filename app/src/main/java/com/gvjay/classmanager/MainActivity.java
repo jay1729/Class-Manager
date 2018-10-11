@@ -5,9 +5,12 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 
+import com.gvjay.classmanager.Database.ClassObject;
 import com.gvjay.classmanager.Database.DBHelper;
 import com.gvjay.classmanager.Seed.Seeder;
 
@@ -24,6 +27,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        NotificationService.createNotificationChannel(this);
+
         Log.i("On Create", "Triggered");
         wasPaused = false;
         Calendar calendar = Calendar.getInstance();
@@ -46,6 +52,23 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, AddClassActivity.class);
                 intent.putExtra(AddClassActivity.DAY_NUMBER_KEY, DayAdapter.getRealDayNumber(viewPager.getCurrentItem()));
                 startActivity(intent);
+            }
+        });
+
+        Button testBtn = findViewById(R.id.testBackTaskBtn);
+        testBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DBHelper dbHelper = new DBHelper(MainActivity.this);
+                dbHelper.clearDB();
+                Calendar calendar = Calendar.getInstance();
+                int day = calendar.get(Calendar.DAY_OF_WEEK) - 1;
+                long fromTime = (calendar.get(Calendar.HOUR_OF_DAY)*DateUtils.HOUR_IN_MILLIS)
+                        + (calendar.get(Calendar.MINUTE)*DateUtils.MINUTE_IN_MILLIS);
+                fromTime += DateUtils.MINUTE_IN_MILLIS;
+                long toTime = fromTime + DateUtils.MINUTE_IN_MILLIS;
+                ClassObject classObject = new ClassObject("Test", day, fromTime, toTime);
+                dbHelper.addClass(classObject);
             }
         });
     }
