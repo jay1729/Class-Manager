@@ -1,6 +1,10 @@
 package com.gvjay.classmanager;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +20,10 @@ import com.gvjay.classmanager.Seed.Seeder;
 
 import java.util.Calendar;
 
+import static com.gvjay.classmanager.AttendanceNotificationWorker.CHANNEL_DESC;
+import static com.gvjay.classmanager.AttendanceNotificationWorker.CHANNEL_ID;
+import static com.gvjay.classmanager.AttendanceNotificationWorker.CHANNEL_NAME;
+
 public class MainActivity extends AppCompatActivity {
 
     private DayAdapter dayAdapter;
@@ -28,15 +36,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        NotificationService.createNotificationChannel(this);
+        createNotificationChannel(this);
 
         Log.i("On Create", "Triggered");
         wasPaused = false;
         Calendar calendar = Calendar.getInstance();
         adapterPosition = calendar.get(Calendar.DAY_OF_WEEK);
 
-        Intent intent = new Intent(this, NotificationService.class);
-        startService(intent);
+        //Intent intent = new Intent(this, NotificationService.class);
+        //startService(intent);
 
         viewPager = findViewById(R.id.viewPager);
         dayAdapter = new DayAdapter(getSupportFragmentManager());
@@ -90,5 +98,16 @@ public class MainActivity extends AppCompatActivity {
         }
         wasPaused = false;
         viewPager.setCurrentItem(adapterPosition, true);
+    }
+
+    public static void createNotificationChannel(Context context){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, importance);
+            channel.setDescription(CHANNEL_DESC);
+
+            NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 }

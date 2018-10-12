@@ -12,9 +12,9 @@ public class AttendanceObject {
     public static String COLUMN_STATUS = "status";
 
     public static class Choices {
-        public static String POSITIVE = "Present";
-        public static String NEGATIVE = "Absent";
-        public static String NEUTRAL = "Not Counted";
+        public static final String POSITIVE = "Present";
+        public static final String NEGATIVE = "Absent";
+        public static final String NEUTRAL = "Not Counted";
     }
 
     public static String CREATE_TABLE_COMMAND = "CREATE TABLE " + TABLE_NAME + "("

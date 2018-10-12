@@ -1,60 +1,55 @@
 package com.gvjay.classmanager;
 
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.os.IBinder;
-import android.support.annotation.Nullable;
+import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 
 import com.gvjay.classmanager.Database.AttendanceObject;
+import com.gvjay.classmanager.Database.DBHelper;
 
-public class NotificationService extends Service {
+import androidx.work.ListenableWorker;
+import androidx.work.Worker;
+import androidx.work.WorkerParameters;
 
+public class AttendanceNotificationWorker extends Worker {
+
+    public static String ATTENDANCE_ID_KEY = "Attendance_ID";
+    public static String WORK_TAG = "Attendance Notification";
     public static String CHANNEL_NAME = "gumballi";
     public static String CHANNEL_ID = "1729";
     public static String CHANNEL_DESC = "Channel for Class Manager";
     public static String NOTIFICATION_TITLE = "Class Manager";
     public static String NOTIFICATION_TEXT = "Did You Attend ";
 
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        BackTask.executeTask(this);
-        BackTask.setNotificationService(this);
-        return super.onStartCommand(intent, flags, startId);
+    private Context context;
+
+    public AttendanceNotificationWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
+        super(context, workerParams);
+        this.context = context;
     }
 
-    @Nullable
+    @NonNull
     @Override
-    public IBinder onBind(Intent intent) { return null; }
+    public Result doWork() {
 
-    public void sendNotification(AttendanceObject attendanceObject){
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID);
+        DBHelper dbHelper = new DBHelper(context);
+        AttendanceObject attendanceObject = dbHelper.getAttendanceByID(getInputData().getLong(ATTENDANCE_ID_KEY, -1));
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID);
         builder.setSmallIcon(R.drawable.ic_launcher_background);
         builder.setContentTitle(NOTIFICATION_TITLE);
         builder.setContentText(getContentText(attendanceObject));
         builder.setPriority(NotificationCompat.PRIORITY_HIGH);
         setNotificationActions(builder, attendanceObject);
 
-        NotificationManagerCompat managerCompat = NotificationManagerCompat.from(this);
+        NotificationManagerCompat managerCompat = NotificationManagerCompat.from(context);
         managerCompat.notify((1729 + (int) attendanceObject.id), builder.build());
-    }
 
-    public static void createNotificationChannel(Context context){
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            int importance = NotificationManager.IMPORTANCE_HIGH;
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, importance);
-            channel.setDescription(CHANNEL_DESC);
-
-            NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
+        return Result.SUCCESS;
     }
 
     private String getContentText(AttendanceObject attendanceObject){
@@ -66,10 +61,10 @@ public class NotificationService extends Service {
                 UpdateAttendanceService.ACTION_NEUTRAL };
         String[] btnTexts = { AttendanceObject.Choices.POSITIVE, AttendanceObject.Choices.NEGATIVE, AttendanceObject.Choices.NEUTRAL };
         for(int i=0;i<3;i++){
-            Intent intent = new Intent(this, UpdateAttendanceService.class);
+            Intent intent = new Intent(context, UpdateAttendanceService.class);
             intent.setAction(actions[i]);
             intent.putExtra(UpdateAttendanceService.ID_KEY, attendanceObject.id);
-            PendingIntent pendingIntent = PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent pendingIntent = PendingIntent.getService(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
             addActionToBuilder(builder, R.drawable.ic_launcher_background, btnTexts[i],
                     pendingIntent);
         }
@@ -83,4 +78,5 @@ public class NotificationService extends Service {
             builder.addAction(action);
         }
     }
+
 }

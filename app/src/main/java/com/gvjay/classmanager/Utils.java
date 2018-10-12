@@ -7,6 +7,7 @@ import com.gvjay.classmanager.Database.AttendanceObject;
 import java.util.ArrayList;
 
 public class Utils {
+
     public static int getDayNumber(String day){
         String[] days = Consts.daysOfTheWeek;
         for(int i=0;i<7;i++){
@@ -61,5 +62,9 @@ public class Utils {
         if(isAM) output += "AM";
         else output += "PM";
         return output;
+    }
+
+    public static String getDefaultAttendanceStatus(){
+        return AttendanceObject.Choices.POSITIVE;
     }
 }

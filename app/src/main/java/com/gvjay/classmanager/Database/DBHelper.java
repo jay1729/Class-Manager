@@ -6,11 +6,6 @@ import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
-
-import com.gvjay.classmanager.BackTask;
-import com.gvjay.classmanager.Database.AttendanceObject;
-import com.gvjay.classmanager.Database.ClassObject;
 
 import java.util.ArrayList;
 
@@ -66,8 +61,19 @@ public class DBHelper extends SQLiteOpenHelper {
         cv.put(ClassObject.COLUMN_TO_TIME, classObject.toTime);
 
         long id = db.insert(ClassObject.TABLE_NAME, null, cv);
-        BackTask.syncWithDB();
         return id;
+    }
+
+    public ClassObject getClassByID(long id){
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor cursor = db.query(ClassObject.TABLE_NAME, null, ClassObject.COLUMN_ID+"=?",
+                new String[]{String.valueOf(id)}, null, null, null);
+        cursor.moveToFirst();
+        ClassObject classObject = new ClassObject(cursor.getInt(0), cursor.getString(1), cursor.getInt(2),
+                cursor.getLong(3), cursor.getLong(4));
+        cursor.close();
+        db.close();
+        return classObject;
     }
 
     public ArrayList<ClassObject> getClassesOnDay(int day){
