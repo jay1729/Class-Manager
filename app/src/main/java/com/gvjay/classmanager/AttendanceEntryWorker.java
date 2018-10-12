@@ -20,9 +20,11 @@ import androidx.work.WorkerParameters;
 
 public class AttendanceEntryWorker extends Worker {
 
-    private DBHelper dbHelper;
     public static String CLASS_ID_KEY = "Class_ID";
+    public static String WORK_TAG = "Attendance Entry Worker";
+
     private UUID notificationWRID;
+    private DBHelper dbHelper;
 
     public AttendanceEntryWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
@@ -38,16 +40,16 @@ public class AttendanceEntryWorker extends Worker {
         AttendanceObject attendanceObject = new AttendanceObject(classObject.title, Calendar.getInstance().getTimeInMillis(),
                 Utils.getDefaultAttendanceStatus());
         attendanceObject.id = dbHelper.addAttendance(attendanceObject);
-        enqueueNotification(attendanceObject.id, (classObject.toTime - classObject.fromTime) / DateUtils.MINUTE_IN_MILLIS);
+        enqueueNotification(attendanceObject.id, (classObject.toTime - classObject.fromTime));
         return Result.SUCCESS;
     }
 
-    private void enqueueNotification(long id, long delayInMins){
+    private void enqueueNotification(long id, long delayInMillis){
 
         Data inputData = new Data.Builder().putLong(AttendanceNotificationWorker.ATTENDANCE_ID_KEY, id).build();
         OneTimeWorkRequest notificationWorkRequest = new OneTimeWorkRequest.Builder(AttendanceNotificationWorker.class)
                 .setInputData(inputData)
-                .setInitialDelay(delayInMins, TimeUnit.MINUTES)
+                .setInitialDelay(delayInMillis, TimeUnit.MILLISECONDS)
                 .addTag(AttendanceNotificationWorker.WORK_TAG)
                 .build();
         WorkManager.getInstance().enqueue(notificationWorkRequest);

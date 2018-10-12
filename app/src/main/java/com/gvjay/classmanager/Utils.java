@@ -65,6 +65,6 @@ public class Utils {
     }
 
     public static String getDefaultAttendanceStatus(){
-        return AttendanceObject.Choices.POSITIVE;
+        return AttendanceObject.Choices.NEGATIVE;
     }
 }

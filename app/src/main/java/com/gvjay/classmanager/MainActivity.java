@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Intent intent = new Intent(this, NotificationService.class);
         //startService(intent);
+        WorkerManager.restartAllWorkers();
 
         viewPager = findViewById(R.id.viewPager);
         dayAdapter = new DayAdapter(getSupportFragmentManager());

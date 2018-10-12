@@ -7,6 +7,8 @@ import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.gvjay.classmanager.WorkerManager;
+
 import java.util.ArrayList;
 
 public class DBHelper extends SQLiteOpenHelper {
@@ -61,6 +63,7 @@ public class DBHelper extends SQLiteOpenHelper {
         cv.put(ClassObject.COLUMN_TO_TIME, classObject.toTime);
 
         long id = db.insert(ClassObject.TABLE_NAME, null, cv);
+        WorkerManager.restartAllWorkers();
         return id;
     }
 
