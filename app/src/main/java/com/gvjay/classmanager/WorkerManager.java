@@ -1,21 +1,46 @@
 package com.gvjay.classmanager;
 
+import android.support.annotation.NonNull;
+import android.util.Log;
+
+import java.util.concurrent.Executor;
+
 import androidx.work.WorkManager;
 
 public class WorkerManager {
-    private static void stopAllWorkers(){
-        WorkManager workManager = WorkManager.getInstance();
-        workManager.cancelAllWorkByTag(WorkerDispatcher.WORK_TAG);
-        workManager.cancelAllWorkByTag(AttendanceEntryWorker.WORK_TAG);
-        workManager.cancelAllWorkByTag(AttendanceNotificationWorker.WORK_TAG);
-    }
-
-    private static void startAllWorkers(){
-        WorkerDispatcher.enqueueNextWorkerDispatcher(0);
-    }
-
     public static void restartAllWorkers(){
-        stopAllWorkers();
-        startAllWorkers();
+        final WorkManager workManager = WorkManager.getInstance();
+        workManager.cancelAllWorkByTag(WorkerDispatcher.WORK_TAG).addListener(new Runnable() {
+            @Override
+            public void run() {
+                workManager.cancelAllWorkByTag(AttendanceEntryWorker.WORK_TAG).addListener(new Runnable() {
+                    @Override
+                    public void run() {
+                        workManager.cancelAllWorkByTag(AttendanceNotificationWorker.WORK_TAG).addListener(new Runnable() {
+                            @Override
+                            public void run() {
+                                Log.i("Next Worker Dispatcher", "Enqueued");
+                                WorkerDispatcher.enqueueNextWorkerDispatcher(0);
+                            }
+                        }, new Executor() {
+                            @Override
+                            public void execute(@NonNull Runnable runnable) {
+                                runnable.run();
+                            }
+                        });
+                    }
+                }, new Executor() {
+                    @Override
+                    public void execute(@NonNull Runnable runnable) {
+                        runnable.run();
+                    }
+                });
+            }
+        }, new Executor() {
+            @Override
+            public void execute(@NonNull Runnable runnable) {
+                runnable.run();
+            }
+        });
     }
 }
