@@ -25,12 +25,14 @@ import static com.gvjay.classmanager.AttendanceNotificationWorker.CHANNEL_DESC;
 import static com.gvjay.classmanager.AttendanceNotificationWorker.CHANNEL_ID;
 import static com.gvjay.classmanager.AttendanceNotificationWorker.CHANNEL_NAME;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ReloadClassData, PageChangeNotify{
 
     private DayAdapter dayAdapter;
     private boolean wasPaused;
     private ViewPager viewPager;
     private int adapterPosition;
+
+    private static ReloadClassData reloadClassData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         createNotificationChannel(this);
+        reloadClassData = this;
 
         Log.i("On Create", "Triggered");
         wasPaused = false;
@@ -52,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         dayAdapter = new DayAdapter(getSupportFragmentManager());
         viewPager.setAdapter(dayAdapter);
 
-        DayPageListener pageListener = new DayPageListener(viewPager);
+        DayPageListener pageListener = new DayPageListener(viewPager, this);
         viewPager.addOnPageChangeListener(pageListener);
 
         FloatingActionButton floatingActionButton = findViewById(R.id.floatingActionButton);
@@ -112,5 +115,21 @@ public class MainActivity extends AppCompatActivity {
             notificationManager.createNotificationChannel(channel);
         }
         DebugNotifier.createNotificationChannel(context);
+    }
+
+    @Override
+    public void reloadData() {
+        dayAdapter = new DayAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(dayAdapter);
+        viewPager.setCurrentItem(adapterPosition, true);
+    }
+
+    public static ReloadClassData getDataReloader() {
+        return reloadClassData;
+    }
+
+    @Override
+    public void notifyPageChanged(int pageNumber) {
+        adapterPosition = pageNumber;
     }
 }

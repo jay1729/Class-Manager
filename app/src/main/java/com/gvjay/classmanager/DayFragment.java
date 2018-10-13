@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.gvjay.classmanager.Database.ClassObject;
 import com.gvjay.classmanager.Database.DBHelper;
+import com.gvjay.classmanager.Dialogs.DeleteDialog;
 
 import java.util.ArrayList;
 
@@ -96,6 +97,7 @@ public class DayFragment extends Fragment {
             classViewHolder.classTiming.setText(Utils.getTiming(this.data.get(i).fromTime, this.data.get(i).toTime));
 
             classViewHolder.itemView.setOnClickListener(new ClassClickListener(this.data.get(i).title, context));
+            classViewHolder.itemView.setOnLongClickListener(new ClassLongClickListener(this.data.get(i), context));
         }
 
         @Override
@@ -139,6 +141,23 @@ public class DayFragment extends Fragment {
             intent.putExtra(ClassActivity.CLASS_TITLE_KEY, classTitle);
 
             startActivity(intent);
+        }
+    }
+
+    public class ClassLongClickListener implements View.OnLongClickListener{
+
+        private ClassObject classObject;
+
+        ClassLongClickListener(ClassObject classObject, Context context){
+            this.classObject = classObject;
+        }
+
+        @Override
+        public boolean onLongClick(View view) {
+            DeleteDialog deleteDialog = new DeleteDialog(view.getContext(), classObject);
+            deleteDialog.show();
+
+            return false;
         }
     }
 }
