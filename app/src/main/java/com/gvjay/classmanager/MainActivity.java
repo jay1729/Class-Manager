@@ -16,6 +16,7 @@ import android.widget.Button;
 
 import com.gvjay.classmanager.Database.ClassObject;
 import com.gvjay.classmanager.Database.DBHelper;
+import com.gvjay.classmanager.DebugUtils.DebugNotifier;
 import com.gvjay.classmanager.Seed.Seeder;
 
 import java.util.Calendar;
@@ -110,5 +111,6 @@ public class MainActivity extends AppCompatActivity {
             NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
+        DebugNotifier.createNotificationChannel(context);
     }
 }

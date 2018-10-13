@@ -7,13 +7,13 @@ import android.util.Log;
 
 import com.gvjay.classmanager.Database.ClassObject;
 import com.gvjay.classmanager.Database.DBHelper;
+import com.gvjay.classmanager.DebugUtils.DebugNotifier;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
 import androidx.work.Data;
-import androidx.work.ListenableWorker;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 import androidx.work.Worker;
@@ -37,13 +37,17 @@ public class WorkerDispatcher extends Worker {
         day = calendar.get(Calendar.DAY_OF_WEEK) - 1;
         Log.i("WorkerDispatcher", calendar.get(Calendar.HOUR_OF_DAY) + "");
         long now = (calendar.get(Calendar.HOUR_OF_DAY)*DateUtils.HOUR_IN_MILLIS) + (calendar.get(Calendar.MINUTE)*DateUtils.MINUTE_IN_MILLIS);
+        DebugNotifier debugNotifier = new DebugNotifier(context);
+        debugNotifier.setTitle("WorkerDispatcher");
+        debugNotifier.setText("Day " + day + " Hour " + calendar.get(Calendar.HOUR_OF_DAY) + " Min " + calendar.get(Calendar.MINUTE));
+        debugNotifier.sendNotification();
         Log.i("Next WorkerDispatcher","Will execute in " + ((DateUtils.DAY_IN_MILLIS - now) / DateUtils.MINUTE_IN_MILLIS) + " Minutes");
         DBHelper dbHelper = new DBHelper(context);
         ArrayList<ClassObject> classObjects = dbHelper.getClassesOnDay(day);
         int size = classObjects.size();
         for(int i=0;i<size;i++){
-            if(classObjects.get(i).fromTime - now < 0) continue;
-            enqueueAttendanceEntryWorker(classObjects.get(i).id, classObjects.get(i).fromTime - now);
+            if(classObjects.get(i).toTime - now < 0) continue;
+            enqueueAttendanceEntryWorker(classObjects.get(i).id, classObjects.get(i).toTime - now);
         }
         enqueueNextWorkerDispatcher(DateUtils.DAY_IN_MILLIS - now);
         return Result.SUCCESS;
