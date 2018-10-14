@@ -35,7 +35,7 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.At
     @Override
     public AttendanceVH onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.attendance_tile, viewGroup, false);
-        return new AttendanceVH(view, this, this);
+        return new AttendanceVH(view, this, this, data.get(i).status);
     }
 
     @Override
@@ -81,7 +81,7 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.At
         private StatusChanger statusChanger;
         DeleteAttendance deleteAttendance;
 
-        AttendanceVH(@NonNull View itemView, final StatusChanger statusChanger, DeleteAttendance deleteAttendance) {
+        AttendanceVH(@NonNull View itemView, final StatusChanger statusChanger, DeleteAttendance deleteAttendance, String currentStatus) {
             super(itemView);
             this.statusChanger = statusChanger;
             this.deleteAttendance = deleteAttendance;
@@ -94,6 +94,19 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.At
             positive = itemView.findViewById(R.id.at_positive_status);
             negative = itemView.findViewById(R.id.at_negative_status);
             neutral = itemView.findViewById(R.id.at_neutral_status);
+
+            Log.i("Current State is", currentStatus);
+            switch(currentStatus){
+                case AttendanceObject.Choices.POSITIVE:
+                    positive.setChecked(true);
+                    break;
+                case AttendanceObject.Choices.NEGATIVE:
+                    negative.setChecked(true);
+                    break;
+                case AttendanceObject.Choices.NEUTRAL:
+                    neutral.setChecked(true);
+                    break;
+            }
 
             positive.setText(AttendanceObject.Choices.POSITIVE);
             negative.setText(AttendanceObject.Choices.NEGATIVE);

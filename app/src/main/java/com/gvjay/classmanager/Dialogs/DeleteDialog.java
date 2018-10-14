@@ -34,6 +34,7 @@ public class DeleteDialog extends Dialog {
         TextView heading = findViewById(R.id.ddf_heading);
         heading.setText("Delete " + classObject.title + "?");
         RadioGroup radioGroup = findViewById(R.id.ddf_radioGroup);
+        radioGroup.check(R.id.ddf_partial_deletion);
         radioGroup.setOnCheckedChangeListener(new RadioChangeListener());
 
         Button okBtn = findViewById(R.id.ddf_ok_btn);

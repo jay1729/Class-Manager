@@ -41,7 +41,6 @@ public class ClassActivity extends AppCompatActivity implements AttendanceAdapte
     public void loadData(){
         attendanceObjects = dbHelper.getAttendanceByTitle(classTitle);
         adapter.setData(attendanceObjects);
-        String pc = String.valueOf(Utils.calculateAttendance(attendanceObjects));
-        attendancePC.setText(pc.substring(0, (4 < pc.length()) ? 4 : pc.length()) + "%");
+        attendancePC.setText(Utils.getAttendanceString(attendanceObjects));
     }
 }

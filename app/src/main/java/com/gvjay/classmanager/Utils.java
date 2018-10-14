@@ -33,6 +33,19 @@ public class Utils {
         return (100*n)/d;
     }
 
+    public static String getAttendanceString(ArrayList<AttendanceObject> attendanceObjects){
+        double attendancePC = calculateAttendance(attendanceObjects);
+        String attendance;
+        if(attendancePC < 0){
+            attendance = "NA";
+        }else{
+            attendance = String.valueOf(attendancePC);
+            attendance = attendance.substring(0, (4 < attendance.length()) ? 4 : attendance.length());
+            attendance += "%";
+        }
+        return attendance;
+    }
+
     public static String getTiming(long fromTime, long toTime){
         String from = getTime(fromTime);
         String to = getTime(toTime);
