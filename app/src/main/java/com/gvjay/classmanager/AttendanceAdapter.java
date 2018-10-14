@@ -115,6 +115,7 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.At
             deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    switchVisibility();
                     AttendanceVH.this.deleteAttendance.deleteAttendanceRecord(getAdapterPosition());
                 }
             });
