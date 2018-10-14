@@ -220,6 +220,18 @@ public class DBHelper extends SQLiteOpenHelper {
         return updateAttendanceRecord(attendanceObject);
     }
 
+    public int deleteAttendanceByID(long id){
+        SQLiteDatabase db = null;
+        int output;
+        try{
+            db = getWritableDatabase();
+            output = db.delete(AttendanceObject.TABLE_NAME, AttendanceObject.COLUMN_ID+"=?", new String[]{String.valueOf(id)});
+        }finally {
+            if(db != null) db.close();
+        }
+        return output;
+    }
+
     public void clearDB(){
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(ClassObject.TABLE_NAME, null, null);

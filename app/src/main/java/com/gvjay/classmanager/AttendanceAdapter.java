@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.AttendanceVH> implements StatusChanger {
+public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.AttendanceVH> implements StatusChanger, DeleteAttendance {
 
     private ArrayList<AttendanceObject> data;
     private Calendar calendar;
@@ -34,7 +35,7 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.At
     @Override
     public AttendanceVH onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.attendance_tile, viewGroup, false);
-        return new AttendanceVH(view, this);
+        return new AttendanceVH(view, this, this);
     }
 
     @Override
@@ -59,21 +60,31 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.At
         reloadData.loadData();
     }
 
+    @Override
+    public void deleteAttendanceRecord(int adapterPosition){
+        dbHelper.deleteAttendanceByID(data.get(adapterPosition).id);
+
+        reloadData.loadData();
+    }
+
     public static class AttendanceVH extends RecyclerView.ViewHolder{
 
         TextView day;
         TextView date;
         TextView status;
+        ImageButton deleteButton;
 
         RadioGroup statusRG;
         RadioButton positive;
         RadioButton negative;
         RadioButton neutral;
         private StatusChanger statusChanger;
+        DeleteAttendance deleteAttendance;
 
-        AttendanceVH(@NonNull View itemView, final StatusChanger statusChanger) {
+        AttendanceVH(@NonNull View itemView, final StatusChanger statusChanger, DeleteAttendance deleteAttendance) {
             super(itemView);
             this.statusChanger = statusChanger;
+            this.deleteAttendance = deleteAttendance;
 
             day = itemView.findViewById(R.id.at_dayTV);
             date = itemView.findViewById(R.id.at_dateTV);
@@ -87,6 +98,13 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.At
             positive.setText(AttendanceObject.Choices.POSITIVE);
             negative.setText(AttendanceObject.Choices.NEGATIVE);
             neutral.setText(AttendanceObject.Choices.NEUTRAL);
+            deleteButton = itemView.findViewById(R.id.at_delete_btn);
+            deleteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AttendanceVH.this.deleteAttendance.deleteAttendanceRecord(getAdapterPosition());
+                }
+            });
 
             statusRG.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                 @Override
@@ -107,6 +125,7 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.At
             });
 
             statusRG.setVisibility(View.INVISIBLE);
+            deleteButton.setVisibility(View.INVISIBLE);
 
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
@@ -122,6 +141,7 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.At
             int i = (statusRG.getVisibility() == View.VISIBLE) ? 0 : 1;
 
             statusRG.setVisibility(options[1-i]);
+            deleteButton.setVisibility(options[1-i]);
             day.setVisibility(options[i]);
             date.setVisibility(options[i]);
             status.setVisibility(options[i]);
