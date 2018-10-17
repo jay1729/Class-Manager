@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/menu_sun"
+            android:title="Sunday" />
+        <item
+            android:id="@+id/menu_mon"
+            android:title="Monday" />
+        <item
+            android:id="@+id/menu_tue"
+            android:title="Tuesday" />
+        <item
+            android:id="@+id/menu_wed"
+            android:title="Wednesday" />
+        <item
+            android:id="@+id/menu_thur"
+            android:title="Thursday"/>
+        <item
+            android:id="@+id/menu_fri"
+            android:title="Friday"/>
+        <item
+            android:id="@+id/menu_sat"
+            android:title="Saturday"/>
+    </group>
+
+    <item android:title="">
+        <menu>
+            <item
+                android:id="@+id/menu_settings_action"
+                android:title="Settings" />
+        </menu>
+    </item>
+
+</menu>

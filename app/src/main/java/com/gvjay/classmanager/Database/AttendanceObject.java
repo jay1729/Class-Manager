@@ -17,6 +17,8 @@ public class AttendanceObject {
         public static final String NEUTRAL = "Not Counted";
     }
 
+    public static String DEFAULT_ENTRY_KEY = "Default Attendance Entry";
+
     public static String CREATE_TABLE_COMMAND = "CREATE TABLE " + TABLE_NAME + "("
             + COLUMN_ID + " INTEGER PRIMARY KEY, "
             + COLUMN_TITLE + " TEXT, "

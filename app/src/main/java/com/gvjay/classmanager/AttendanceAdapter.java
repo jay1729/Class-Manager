@@ -48,6 +48,7 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.At
             attendanceVH.itemView.findViewById(R.id.view2).setVisibility(View.INVISIBLE);
             return;
         }
+        attendanceVH.itemView.findViewById(R.id.view2).setVisibility(View.VISIBLE);
         calendar.setTimeInMillis(data.get(i).date);
         attendanceVH.day.setText(Utils.getDayFromNumber(calendar.get(Calendar.DAY_OF_WEEK)-1));
         attendanceVH.date.setText((new Date(data.get(i).date)).toString().substring(0, 10));

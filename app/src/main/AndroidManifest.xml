@@ -9,7 +9,7 @@
         android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme.NoActionBar">
         <service android:name=".UpdateAttendanceService" />
 
         <activity android:name=".MainActivity">
@@ -21,7 +21,8 @@
         </activity>
         <activity android:name=".ClassActivity" />
         <activity android:name=".AddClassActivity" />
-        <activity android:name=".AddAttendanceActivity"></activity>
+        <activity android:name=".AddAttendanceActivity" />
+        <activity android:name=".SettingsActivity"></activity>
     </application>
 
 </manifest>

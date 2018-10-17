@@ -38,7 +38,7 @@ public class AttendanceEntryWorker extends Worker {
         long id = data.getLong(CLASS_ID_KEY, -1);
         ClassObject classObject = dbHelper.getClassByID(id);
         AttendanceObject attendanceObject = new AttendanceObject(classObject.title, Calendar.getInstance().getTimeInMillis(),
-                Utils.getDefaultAttendanceStatus());
+                Utils.getDefaultAttendanceStatus(getApplicationContext()));
         attendanceObject.id = dbHelper.addAttendance(attendanceObject);
         enqueueNotification(attendanceObject.id, 0);
         return Result.SUCCESS;
