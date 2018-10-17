@@ -93,7 +93,6 @@ public class MainActivity extends AppCompatActivity implements ReloadClassData, 
             @Override
             public void onClick(View view) {
                 DBHelper dbHelper = new DBHelper(MainActivity.this);
-                dbHelper.clearDB();
                 Calendar calendar = Calendar.getInstance();
                 int day = calendar.get(Calendar.DAY_OF_WEEK) - 1;
                 long fromTime = (calendar.get(Calendar.HOUR_OF_DAY)*DateUtils.HOUR_IN_MILLIS)
@@ -121,6 +120,17 @@ public class MainActivity extends AppCompatActivity implements ReloadClassData, 
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_settings:
+                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+                startActivity(intent);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -197,6 +207,10 @@ public class MainActivity extends AppCompatActivity implements ReloadClassData, 
                 break;
             case R.id.menu_sat:
                 viewPager.setCurrentItem(7, true);
+                break;
+            case R.id.menu_settings_action:
+                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+                startActivity(intent);
                 break;
         }
 

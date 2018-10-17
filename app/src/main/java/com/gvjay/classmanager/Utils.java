@@ -1,5 +1,7 @@
 package com.gvjay.classmanager;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.text.format.DateUtils;
 
 import com.gvjay.classmanager.Database.AttendanceObject;
@@ -77,7 +79,9 @@ public class Utils {
         return output;
     }
 
-    public static String getDefaultAttendanceStatus(){
-        return AttendanceObject.Choices.NEGATIVE;
+    public static String getDefaultAttendanceStatus(Context context){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(context.getString(R.string.shared_pref_name),
+                Context.MODE_PRIVATE);
+        return sharedPreferences.getString(AttendanceObject.DEFAULT_ENTRY_KEY, AttendanceObject.Choices.NEGATIVE);
     }
 }

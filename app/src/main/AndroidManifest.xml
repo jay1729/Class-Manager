@@ -21,7 +21,8 @@
         </activity>
         <activity android:name=".ClassActivity" />
         <activity android:name=".AddClassActivity" />
-        <activity android:name=".AddAttendanceActivity"></activity>
+        <activity android:name=".AddAttendanceActivity" />
+        <activity android:name=".SettingsActivity"></activity>
     </application>
 
 </manifest>
