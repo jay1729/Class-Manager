@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -22,6 +23,8 @@ public class ClassActivity extends AppCompatActivity implements AttendanceAdapte
     private AttendanceAdapter adapter;
     private TextView attendancePC;
     private boolean wasPaused;
+    private RecyclerView recyclerView;
+    private LinearLayoutManager linearLayoutManager;
 
     public static String CLASS_TITLE_KEY = "Class Title";
 
@@ -32,9 +35,10 @@ public class ClassActivity extends AppCompatActivity implements AttendanceAdapte
 
         wasPaused = false;
         dbHelper = new DBHelper(this);
+        recyclerView = findViewById(R.id.attendanceRV);
+        linearLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(linearLayoutManager);
         adapter = new AttendanceAdapter(dbHelper, this);
-        RecyclerView recyclerView = findViewById(R.id.attendanceRV);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
         classTitle = getIntent().getStringExtra(CLASS_TITLE_KEY);
         TextView classTitleTV = findViewById(R.id.classTitle);
