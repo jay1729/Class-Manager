@@ -3,6 +3,7 @@ package com.gvjay.classmanager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
@@ -40,7 +41,8 @@ public class AttendanceNotificationWorker extends Worker {
         AttendanceObject attendanceObject = dbHelper.getAttendanceByID(getInputData().getLong(ATTENDANCE_ID_KEY, -1));
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID);
-        builder.setSmallIcon(R.drawable.ic_launcher_background);
+        builder.setSmallIcon(R.drawable.ic_stat_cm);
+        builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher));
         builder.setContentTitle(NOTIFICATION_TITLE);
         builder.setContentText(getContentText(attendanceObject));
         builder.setPriority(NotificationCompat.PRIORITY_HIGH);
