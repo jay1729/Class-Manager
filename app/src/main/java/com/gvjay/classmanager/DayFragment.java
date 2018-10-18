@@ -84,6 +84,11 @@ public class DayFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull ClassViewHolder classViewHolder, int i) {
+            if(i >= data.size()){
+                classViewHolder.itemView.setVisibility(View.INVISIBLE);
+                return;
+            }
+            classViewHolder.itemView.setVisibility(View.VISIBLE);
             classViewHolder.className.setText(this.data.get(i).title);
             String attendance;
             if(this.attendancePC[i] < 0){
@@ -102,7 +107,7 @@ public class DayFragment extends Fragment {
 
         @Override
         public int getItemCount() {
-            return this.data.size();
+            return (this.data.size() + 1);
         }
 
         public void setData(ArrayList<ClassObject> classObjects){

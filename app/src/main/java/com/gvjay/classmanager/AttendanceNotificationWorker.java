@@ -44,6 +44,8 @@ public class AttendanceNotificationWorker extends Worker {
         builder.setContentTitle(NOTIFICATION_TITLE);
         builder.setContentText(getContentText(attendanceObject));
         builder.setPriority(NotificationCompat.PRIORITY_HIGH);
+        builder.setAutoCancel(true);
+        builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
         setNotificationActions(builder, attendanceObject);
 
         NotificationManagerCompat managerCompat = NotificationManagerCompat.from(context);

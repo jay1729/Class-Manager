@@ -3,6 +3,7 @@ package com.gvjay.classmanager;
 import android.app.IntentService;
 import android.content.Intent;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NotificationManagerCompat;
 
 import com.gvjay.classmanager.Database.AttendanceObject;
 import com.gvjay.classmanager.Database.DBHelper;
@@ -36,6 +37,8 @@ public class UpdateAttendanceService extends IntentService {
                     dbHelper.updateAttendanceByID(id, AttendanceObject.Choices.NEUTRAL);
                     break;
             }
+            NotificationManagerCompat managerCompat = NotificationManagerCompat.from(this);
+            managerCompat.cancel(1729 + (int) id);
         }catch (java.lang.NullPointerException e){
             e.printStackTrace();
         }

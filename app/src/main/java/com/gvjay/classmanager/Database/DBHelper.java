@@ -11,6 +11,8 @@ import com.gvjay.classmanager.WorkerManager;
 
 import java.util.ArrayList;
 
+import androidx.work.WorkManager;
+
 public class DBHelper extends SQLiteOpenHelper {
 
     public static String DATABASE_NAME = "CMDatabase.db";
@@ -133,6 +135,7 @@ public class DBHelper extends SQLiteOpenHelper {
             output = db.delete(ClassObject.TABLE_NAME, ClassObject.COLUMN_TITLE+"=?", new String[]{title});
         }finally {
             db.close();
+            WorkerManager.restartAllWorkers();
         }
         return output;
     }
