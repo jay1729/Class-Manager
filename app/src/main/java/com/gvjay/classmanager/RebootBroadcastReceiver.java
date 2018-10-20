@@ -8,7 +8,9 @@ import android.widget.Toast;
 public class RebootBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        WorkerManager.restartAllWorkers();
-        Toast.makeText(context, "WorkerManager Restarted!!", Toast.LENGTH_LONG).show();
+        if ("android.intent.action.BOOT_COMPLETED".equals(intent.getAction())){
+            WorkerManager.restartAllWorkers();
+            Toast.makeText(context, "WorkerManager Restarted!!", Toast.LENGTH_LONG).show();
+        }
     }
 }
