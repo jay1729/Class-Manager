@@ -46,7 +46,8 @@ public class WorkerDispatcher extends Worker {
         ArrayList<ClassObject> classObjects = dbHelper.getClassesOnDay(day);
         int size = classObjects.size();
         for(int i=0;i<size;i++){
-            if(classObjects.get(i).toTime - now < 0) continue;
+            if(classObjects.get(i).toTime - now <= 0) continue;
+            Log.i("ClassObject", classObjects.get(i).id + " " + classObjects.get(i).toTime + " " + now);
             enqueueAttendanceEntryWorker(classObjects.get(i).id, classObjects.get(i).toTime - now);
         }
         enqueueNextWorkerDispatcher(DateUtils.DAY_IN_MILLIS - now);

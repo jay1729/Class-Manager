@@ -3,6 +3,7 @@ package com.gvjay.classmanager;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.text.format.DateUtils;
+import android.util.Log;
 
 import com.gvjay.classmanager.Database.AttendanceObject;
 import com.gvjay.classmanager.Database.ClassObject;
@@ -40,6 +41,7 @@ public class AttendanceEntryWorker extends Worker {
         AttendanceObject attendanceObject = new AttendanceObject(classObject.title, Calendar.getInstance().getTimeInMillis(),
                 Utils.getDefaultAttendanceStatus(getApplicationContext()));
         attendanceObject.id = dbHelper.addAttendance(attendanceObject);
+        Log.i("New Attendance Record!!", attendanceObject.id+"");
         enqueueNotification(attendanceObject.id, 0);
         return Result.SUCCESS;
     }

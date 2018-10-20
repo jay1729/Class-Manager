@@ -8,6 +8,7 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
+import android.util.Log;
 
 import com.gvjay.classmanager.Database.AttendanceObject;
 import com.gvjay.classmanager.Database.DBHelper;
@@ -39,7 +40,7 @@ public class AttendanceNotificationWorker extends Worker {
 
         DBHelper dbHelper = new DBHelper(context);
         AttendanceObject attendanceObject = dbHelper.getAttendanceByID(getInputData().getLong(ATTENDANCE_ID_KEY, -1));
-
+        Log.i("Notification for ID : ", attendanceObject.id + "");
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID);
         builder.setSmallIcon(R.drawable.ic_stat_cm);
         builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher));
@@ -68,7 +69,7 @@ public class AttendanceNotificationWorker extends Worker {
             Intent intent = new Intent(context, UpdateAttendanceService.class);
             intent.setAction(actions[i]);
             intent.putExtra(UpdateAttendanceService.ID_KEY, attendanceObject.id);
-            PendingIntent pendingIntent = PendingIntent.getService(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent pendingIntent = PendingIntent.getService(context, (int) attendanceObject.id, intent, PendingIntent.FLAG_ONE_SHOT);
             addActionToBuilder(builder, R.drawable.ic_launcher_background, btnTexts[i],
                     pendingIntent);
         }

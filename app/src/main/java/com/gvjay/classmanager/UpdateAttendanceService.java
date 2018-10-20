@@ -4,6 +4,7 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationManagerCompat;
+import android.util.Log;
 
 import com.gvjay.classmanager.Database.AttendanceObject;
 import com.gvjay.classmanager.Database.DBHelper;
@@ -26,6 +27,7 @@ public class UpdateAttendanceService extends IntentService {
         DBHelper dbHelper = new DBHelper(this);
         try {
             id = intent.getLongExtra(ID_KEY, -1);
+            Log.i("UpdateAttendanceService", ""+id);
             switch (intent.getAction()){
                 case ACTION_POSITIVE:
                     dbHelper.updateAttendanceByID(id, AttendanceObject.Choices.POSITIVE);
