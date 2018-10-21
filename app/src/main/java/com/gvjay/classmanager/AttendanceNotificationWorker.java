@@ -13,6 +13,8 @@ import android.util.Log;
 import com.gvjay.classmanager.Database.AttendanceObject;
 import com.gvjay.classmanager.Database.DBHelper;
 
+import java.util.Random;
+
 import androidx.work.ListenableWorker;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
@@ -69,7 +71,11 @@ public class AttendanceNotificationWorker extends Worker {
             Intent intent = new Intent(context, UpdateAttendanceService.class);
             intent.setAction(actions[i]);
             intent.putExtra(UpdateAttendanceService.ID_KEY, attendanceObject.id);
-            PendingIntent pendingIntent = PendingIntent.getService(context, (int) attendanceObject.id, intent, PendingIntent.FLAG_ONE_SHOT);
+            Random rand = new Random();
+            int requestCode = rand.nextInt(Integer.MAX_VALUE);
+            Log.i("The Request code is", requestCode+"");
+            PendingIntent pendingIntent = PendingIntent.getService(context, requestCode, intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT);
             addActionToBuilder(builder, R.drawable.ic_launcher_background, btnTexts[i],
                     pendingIntent);
         }
