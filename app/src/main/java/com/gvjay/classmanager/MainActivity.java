@@ -87,22 +87,6 @@ public class MainActivity extends AppCompatActivity implements ReloadClassData, 
                 startActivity(intent);
             }
         });
-
-        Button testBtn = findViewById(R.id.testBackTaskBtn);
-        testBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DBHelper dbHelper = new DBHelper(MainActivity.this);
-                Calendar calendar = Calendar.getInstance();
-                int day = calendar.get(Calendar.DAY_OF_WEEK) - 1;
-                long fromTime = (calendar.get(Calendar.HOUR_OF_DAY)*DateUtils.HOUR_IN_MILLIS)
-                        + (calendar.get(Calendar.MINUTE)*DateUtils.MINUTE_IN_MILLIS);
-                fromTime += DateUtils.MINUTE_IN_MILLIS;
-                long toTime = fromTime + DateUtils.MINUTE_IN_MILLIS;
-                ClassObject classObject = new ClassObject("Test", day, fromTime, toTime);
-                dbHelper.addClass(classObject);
-            }
-        });
     }
 
     @Override

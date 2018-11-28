@@ -37,10 +37,6 @@ public class WorkerDispatcher extends Worker {
         day = calendar.get(Calendar.DAY_OF_WEEK) - 1;
         Log.i("WorkerDispatcher", calendar.get(Calendar.HOUR_OF_DAY) + "");
         long now = (calendar.get(Calendar.HOUR_OF_DAY)*DateUtils.HOUR_IN_MILLIS) + (calendar.get(Calendar.MINUTE)*DateUtils.MINUTE_IN_MILLIS);
-        DebugNotifier debugNotifier = new DebugNotifier(context);
-        debugNotifier.setTitle("WorkerDispatcher");
-        debugNotifier.setText("Day " + day + " Hour " + calendar.get(Calendar.HOUR_OF_DAY) + " Min " + calendar.get(Calendar.MINUTE));
-        debugNotifier.sendNotification();
         Log.i("Next WorkerDispatcher","Will execute in " + ((DateUtils.DAY_IN_MILLIS - now) / DateUtils.MINUTE_IN_MILLIS) + " Minutes");
         DBHelper dbHelper = new DBHelper(context);
         ArrayList<ClassObject> classObjects = dbHelper.getClassesOnDay(day);
